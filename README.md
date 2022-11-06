@@ -23,9 +23,10 @@ We use the Symfony Framework (6.1) with PHP (8.2) as backend and NextJS (13) wit
 
 ## Manage projects
 
-    - A register user can create a project.
-    - A register user can edit a project.
-    - A register user can delete a project. 
+    - A register user can create a project, the user become the owner of the project.
+    - The owner of a project can can edit a project.
+    - The owner of a project can delete a project. 
+    - The owner of a project can archive a project. 
     - The owner of a project can add a friend to a project.
     - The owner of a project can remove a friend from a project.
     - The owner of a project can change the balance between project users.
@@ -33,7 +34,7 @@ We use the Symfony Framework (6.1) with PHP (8.2) as backend and NextJS (13) wit
 ## Add your expenses
 
     - Project users can add their expenses manualy or by uploading a file.
-    - Projects users be notified when a new expenses are added, midiified or deleted.
+    - Projects users be notified when a new expenses are added, modified or deleted.
     - Expenses file must be in CSV format, system will try to discover the date, amount and description of the expense.
 
 ## Dashboard
