@@ -1,0 +1,9 @@
+http://gac.myprod.local,
+http://api.gac.myprod.local {
+	root * /var/www/public
+	encode gzip
+    php_fastcgi gac.php-fpm:9000 {
+        index index.php
+    }
+    file_server
+}
