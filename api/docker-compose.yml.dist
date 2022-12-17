@@ -1,0 +1,55 @@
+#
+# This docker-compose file can be use in association with the docker-stack project,
+# @see https://github.com/FabienD/docker-stack/blob/main/doc/collection.md
+#
+services:
+
+  php-fpm:
+      container_name: gac.php-fpm
+      image: myprod/php:8.2-dev
+      user: 1000:1000
+      volumes:
+          - .:/var/www
+      environment:
+          - XDEBUG_SESSION=PHPDOCKER
+      logging:
+        driver: loki
+        options:
+            loki-url: "http://loki.stack.local/loki/api/v1/push"
+
+  caddy:
+    container_name: gac.caddy
+    image: caddy:2.6
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gac.rule=Host(`gac.myprod.local`, `api.gac.myprod.local`)"
+      - "traefik.http.routers.gac.entrypoints=web"
+      - "traefik.http.routers.gac.service=gac"
+      - "traefik.http.services.gac.loadbalancer.passhostheader=true"
+    ports:
+      - "80"
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./public:/var/www/public
+
+
+  #  nginx:
+  #    container_name: gac.nginx
+  #    image: nginx:1.20
+  #    labels:
+  #      - "traefik.enable=true"
+  #      - "traefik.http.routers.gac.rule=Host(`gac.myprod.local`, `api.gac.myprod.local`)"
+  #      - "traefik.http.routers.gac.entrypoints=web, websecure"
+  #      - "traefik.http.routers.gac.service=gac"
+  #      - "traefik.http.services.gac.loadbalancer.passhostheader=true"
+  #    ports:
+  #      - "80"
+  #    volumes:
+  #      - ./docker/nginx/:/etc/nginx/conf.d/
+  #      - ./public:/var/www/public
+
+networks:
+  default:
+    name: stack_dev
+    external: true
+    
